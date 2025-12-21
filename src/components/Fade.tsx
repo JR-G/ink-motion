@@ -6,11 +6,41 @@ import { applyOpacity, colorize } from '../utils/colors.js'
 import { getEasingFunction } from '../utils/easing.js'
 
 interface FadeProps extends BaseEffectProps {
+  /**
+   * Text colour
+   * @default '#ffffff'
+   * @example 'yellow'
+   */
   color?: Color
+
+  /**
+   * Starting opacity (0-1)
+   * @default 0
+   */
   from?: number
+
+  /**
+   * Ending opacity (0-1)
+   * @default 1
+   */
   to?: number
+
+  /**
+   * Duration in milliseconds
+   * @default 1000
+   */
   duration?: number
+
+  /**
+   * Easing function
+   * @default 'ease-out'
+   */
   easing?: EasingName
+
+  /**
+   * Loop animation continuously
+   * @default false
+   */
   loop?: boolean
 }
 

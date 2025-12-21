@@ -8,9 +8,29 @@ import { getTextLength, mapChars } from '../utils/text.js'
 type ShimmerDirection = 'left' | 'right'
 
 interface ShimmerProps extends BaseEffectProps {
+  /**
+   * Gradient colours for the shimmer effect [start, peak, end]
+   * @default ['#666666', '#ffffff', '#666666']
+   * @example ['#60a5fa', '#3b82f6', '#60a5fa']
+   */
   colors?: [Color, Color, Color]
+
+  /**
+   * Width of the shimmer band in characters
+   * @default 4
+   */
   width?: number
+
+  /**
+   * Brightness multiplier (0-1)
+   * @default 1
+   */
   intensity?: number
+
+  /**
+   * Direction of shimmer movement
+   * @default 'right'
+   */
   direction?: ShimmerDirection
 }
 

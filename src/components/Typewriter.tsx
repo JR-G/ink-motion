@@ -7,10 +7,37 @@ import { colorize } from '../utils/colors.js'
 import { getTextLength, splitChars } from '../utils/text.js'
 
 interface TypewriterProps extends BaseEffectProps {
+  /**
+   * Text colour
+   * @default undefined (inherits)
+   * @example 'green'
+   */
   color?: Color
+
+  /**
+   * Cursor character or false to disable
+   * @default '▋'
+   * @example '█'
+   */
   cursor?: string | boolean
+
+  /**
+   * Cursor colour (defaults to text colour)
+   * @default undefined
+   * @example 'cyan'
+   */
   cursorColor?: Color
+
+  /**
+   * Typing speed randomness (0-1) for more human-like typing
+   * @default 0.3
+   */
   variance?: number
+
+  /**
+   * Initial delay before typing starts (ms)
+   * @default 0
+   */
   delay?: number
 }
 

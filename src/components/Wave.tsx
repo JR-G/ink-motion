@@ -8,9 +8,29 @@ import { mapChars } from '../utils/text.js'
 type WaveType = 'brightness' | 'vertical'
 
 interface WaveProps extends BaseEffectProps {
+  /**
+   * Gradient colours for the wave [dark, bright]
+   * @default ['#888888', '#ffffff']
+   * @example ['#ec4899', '#8b5cf6']
+   */
   colors?: [Color, Color]
+
+  /**
+   * Wave height (0-1)
+   * @default 0.5
+   */
   amplitude?: number
+
+  /**
+   * Number of wave cycles across text
+   * @default 2
+   */
   frequency?: number
+
+  /**
+   * Wave effect type
+   * @default 'brightness'
+   */
   type?: WaveType
 }
 

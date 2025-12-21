@@ -5,8 +5,8 @@ Beautiful, performant text effects and animations for [Ink](https://github.com/v
 ## Features
 
 - 🎨 **Rich text effects**: Shimmer, Typewriter, Fade, Wave
-- ⚡ **Performance-focused**: RAF-based rendering with optimized re-renders
-- 🔧 **Highly customizable**: Control colors, speed, intensity, and more
+- ⚡ **Performant**: Optimised animations with minimal re-renders
+- 🔧 **Highly customisable**: Control colours, speed, intensity, and more
 - 📦 **Type-safe**: Full TypeScript support with strict types
 - 🪶 **Lightweight**: Minimal dependencies
 
@@ -14,12 +14,16 @@ Beautiful, performant text effects and animations for [Ink](https://github.com/v
 
 ```bash
 bun add ink-motion
+npm install ink-motion
+pnpm add ink-motion
 ```
 
 ## Quick Start
 
 ```tsx
-import { Shimmer, Typewriter, Fade, Wave } from 'ink-motion'
+import React from 'react'
+import { render } from 'ink'
+import { Shimmer, Typewriter } from 'ink-motion'
 
 function App() {
   return (
@@ -28,12 +32,14 @@ function App() {
         Loading...
       </Shimmer>
 
-      <Typewriter speed={1.5} cursor="█">
-        Hello, world!
+      <Typewriter speed={2} cursor="█">
+        bun add ink-motion
       </Typewriter>
     </>
   )
 }
+
+render(<App />)
 ```
 
 ## Components
@@ -42,6 +48,21 @@ function App() {
 - **Typewriter** - Character-by-character typing animation
 - **Fade** - Smooth fade in/out transitions
 - **Wave** - Wave motion through text
+
+## Demo
+
+See all effects in action:
+
+```bash
+git clone https://github.com/your-username/ink-motion
+cd ink-motion
+bun install
+bun run demo
+```
+
+## Documentation
+
+See [Guide](./docs/guide.md) for advanced usage patterns and TypeScript types.
 
 ## License
 
