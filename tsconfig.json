@@ -2,11 +2,10 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM"],
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "jsx": "react",
-    "jsxImportSource": "react",
 
     "strict": true,
     "noUncheckedIndexedAccess": true,
