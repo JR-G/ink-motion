@@ -1,8 +1,10 @@
 import { Box, render, Text } from 'ink'
-import React from 'react'
+import React, { useState } from 'react'
 import { Fade, Shimmer, Typewriter, Wave } from '../src/index.js'
 
 function Demo() {
+  const [typewriterKey, setTypewriterKey] = useState(0)
+
   return (
     <Box flexDirection="column" padding={1}>
       <Box marginBottom={1}>
@@ -19,7 +21,16 @@ function Demo() {
 
         <Box>
           <Text dimColor>Typewriter: </Text>
-          <Typewriter color="green" cursor="█" variance={0.4} speed={2}>
+          <Typewriter
+            key={typewriterKey}
+            color="green"
+            cursor="█"
+            variance={0.4}
+            speed={2}
+            onComplete={() => {
+              setTimeout(() => setTypewriterKey(previous => previous + 1), 1000)
+            }}
+          >
             bun add ink-motion
           </Typewriter>
         </Box>
