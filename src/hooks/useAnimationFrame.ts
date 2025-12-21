@@ -1,7 +1,10 @@
 import { useEffect, useRef } from 'react'
 
+const TARGET_FPS = 60
+const FRAME_INTERVAL_MS = 1000 / TARGET_FPS
+
 /**
- * Runs a callback on every animation frame using requestAnimationFrame
+ * Runs a callback on every animation frame using setInterval
  *
  * @param callback - Function called each frame with delta time in ms
  * @param enabled - Whether animation is active
@@ -10,7 +13,7 @@ export function useAnimationFrame(
   callback: (deltaTime: number) => void,
   enabled: boolean = true,
 ): void {
-  const requestRef = useRef<number>()
+  const intervalRef = useRef<Timer>()
   const previousTimeRef = useRef<number>()
   const callbackRef = useRef(callback)
 
@@ -20,27 +23,25 @@ export function useAnimationFrame(
 
   useEffect(() => {
     if (!enabled) {
-      if (requestRef.current) {
-        cancelAnimationFrame(requestRef.current)
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
       }
       previousTimeRef.current = undefined
       return
     }
 
-    const animate = (time: number) => {
+    intervalRef.current = setInterval(() => {
+      const currentTime = Date.now()
       if (previousTimeRef.current !== undefined) {
-        const deltaTime = time - previousTimeRef.current
+        const deltaTime = currentTime - previousTimeRef.current
         callbackRef.current(deltaTime)
       }
-      previousTimeRef.current = time
-      requestRef.current = requestAnimationFrame(animate)
-    }
-
-    requestRef.current = requestAnimationFrame(animate)
+      previousTimeRef.current = currentTime
+    }, FRAME_INTERVAL_MS)
 
     return () => {
-      if (requestRef.current) {
-        cancelAnimationFrame(requestRef.current)
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
       }
     }
   }, [enabled])

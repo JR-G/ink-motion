@@ -14,7 +14,7 @@ interface ShimmerProps extends BaseEffectProps {
   direction?: ShimmerDirection
 }
 
-const DEFAULT_COLORS: [Color, Color, Color] = ['#ffffff40', '#ffffff', '#ffffff40']
+const DEFAULT_COLORS: [Color, Color, Color] = ['#666666', '#ffffff', '#666666']
 const DEFAULT_WIDTH = 4
 const DEFAULT_INTENSITY = 1
 const DEFAULT_DIRECTION: ShimmerDirection = 'right'
@@ -54,7 +54,7 @@ export function Shimmer({
 
   useAnimationFrame((deltaTime) => {
     setOffset((previousOffset) => {
-      const movement = (deltaTime / ANIMATION_CYCLE_MS) * speed
+      const movement = (deltaTime / ANIMATION_CYCLE_MS) * speed * totalWidth
       const newOffset = direction === 'right'
         ? previousOffset + movement
         : previousOffset - movement

@@ -19,6 +19,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "demo": "bun examples/demo.tsx",
     "test": "bun test",
     "type-check": "tsc --noEmit",
     "lint": "eslint .",
