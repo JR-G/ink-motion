@@ -44,8 +44,8 @@ function Demo() {
 
         <Box>
           <Text dimColor>Wave: </Text>
-          <Wave colors={['#ec4899', '#8b5cf6']} amplitude={0.7} frequency={3}>
-            ~~ wavy text ~~
+          <Wave colors={['#0000ff', '#ffff00']} amplitude={0.8} frequency={1} speed={2}>
+            ~~~~~~~~ flowing wave ~~~~~~~~
           </Wave>
         </Box>
       </Box>

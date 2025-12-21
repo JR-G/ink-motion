@@ -54,8 +54,11 @@ function calculateWaveValue(
   amplitude: number,
 ): number {
   const clampedAmplitude = Math.min(Math.max(amplitude, MIN_AMPLITUDE), MAX_AMPLITUDE)
-  const phase = (characterIndex * frequency) + time
-  const sineWave = Math.sin(phase * FULL_CIRCLE_RADIANS)
+  const waveLength = FULL_CIRCLE_RADIANS / frequency
+  const spatialComponent = (characterIndex / waveLength) * FULL_CIRCLE_RADIANS
+  const temporalComponent = time * FULL_CIRCLE_RADIANS
+  const phase = spatialComponent - temporalComponent
+  const sineWave = Math.sin(phase)
   const normalizedSine = (sineWave + SINE_WAVE_OFFSET) * SINE_WAVE_NORMALIZE
   const amplitudeComplement = MAX_AMPLITUDE - clampedAmplitude
   return normalizedSine * clampedAmplitude + amplitudeComplement
