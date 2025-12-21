@@ -5,6 +5,8 @@ export { Wave } from './components/Wave.js'
 
 export { useAnimationFrame } from './hooks/useAnimationFrame.js'
 export { useElapsedTime } from './hooks/useElapsedTime.js'
+export { useCursorBlink } from './hooks/useCursorBlink.js'
+export { useTypewriterProgress } from './hooks/useTypewriterProgress.js'
 
 export type {
   Color,
