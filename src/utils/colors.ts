@@ -1,0 +1,124 @@
+import chalk from 'chalk'
+import type { Color } from '../types/index.js'
+
+const HEX_BASE_16 = 16
+const HEX_BYTE_LENGTH = 2
+const HEX_PAD_CHARACTER = '0'
+const MIN_RGB_COMPONENTS = 3
+const INTERPOLATION_MIDPOINT = 0.5
+
+function rgbToHex(red: number, green: number, blue: number): string {
+  const redHex = red.toString(HEX_BASE_16).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
+  const greenHex = green.toString(HEX_BASE_16).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
+  const blueHex = blue.toString(HEX_BASE_16).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
+  return `#${redHex}${greenHex}${blueHex}`
+}
+
+/**
+ * Converts a hex color string to RGB values
+ *
+ * @param hex - Hex color string (with or without #)
+ * @returns Tuple of [red, green, blue] values (0-255) or null if invalid
+ */
+export function hexToRgb(hex: string): [number, number, number] | null {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  if (!result)
+    return null
+
+  const [, redHex, greenHex, blueHex] = result
+  return [
+    Number.parseInt(redHex!, HEX_BASE_16),
+    Number.parseInt(greenHex!, HEX_BASE_16),
+    Number.parseInt(blueHex!, HEX_BASE_16),
+  ]
+}
+
+/**
+ * Applies color to text using chalk
+ *
+ * @param text - Text to colorize
+ * @param color - Color as hex (#ff0000), rgb(255,0,0), or named color (red, blue, etc)
+ * @returns Colorized text with ANSI escape codes
+ */
+export function colorize(text: string, color: Color): string {
+  if (color.startsWith('#'))
+    return chalk.hex(color)(text)
+
+  if (color.startsWith('rgb')) {
+    const match = color.match(/\d+/g)
+    const hasEnoughComponents = match && match.length >= MIN_RGB_COMPONENTS
+    if (!hasEnoughComponents)
+      return text
+
+    const [redStr, greenStr, blueStr] = match
+    const red = Number.parseInt(redStr!)
+    const green = Number.parseInt(greenStr!)
+    const blue = Number.parseInt(blueStr!)
+    return chalk.rgb(red, green, blue)(text)
+  }
+
+  const chalkColor = chalk[color as keyof typeof chalk]
+  if (typeof chalkColor === 'function')
+    return chalkColor(text)
+
+  return text
+}
+
+/**
+ * Applies opacity to a hex color by darkening it
+ * Note: Terminal approximation - true opacity not possible in most terminals
+ *
+ * @param color - Hex color string
+ * @param opacity - Opacity value from 0 (transparent/black) to 1 (fully opaque)
+ * @returns Adjusted hex color or original color if not hex format
+ */
+export function applyOpacity(color: Color, opacity: number): Color {
+  if (!color.startsWith('#'))
+    return color
+
+  const rgb = hexToRgb(color)
+  if (!rgb)
+    return color
+
+  const [red, green, blue] = rgb
+  const adjustedRed = Math.round(red * opacity)
+  const adjustedGreen = Math.round(green * opacity)
+  const adjustedBlue = Math.round(blue * opacity)
+
+  return rgbToHex(adjustedRed, adjustedGreen, adjustedBlue)
+}
+
+/**
+ * Interpolates between two colors
+ *
+ * @param color1 - Starting color
+ * @param color2 - Ending color
+ * @param progress - Interpolation progress from 0 to 1
+ * @returns Interpolated color (hex if both inputs are hex, otherwise snaps to nearest)
+ */
+export function interpolateColor(
+  color1: Color,
+  color2: Color,
+  progress: number,
+): Color {
+  const isColor1Hex = color1.startsWith('#')
+  const isColor2Hex = color2.startsWith('#')
+
+  if (!isColor1Hex || !isColor2Hex)
+    return progress < INTERPOLATION_MIDPOINT ? color1 : color2
+
+  const rgb1 = hexToRgb(color1)
+  const rgb2 = hexToRgb(color2)
+
+  if (!rgb1 || !rgb2)
+    return progress < INTERPOLATION_MIDPOINT ? color1 : color2
+
+  const [red1, green1, blue1] = rgb1
+  const [red2, green2, blue2] = rgb2
+
+  const red = Math.round(red1 + (red2 - red1) * progress)
+  const green = Math.round(green1 + (green2 - green1) * progress)
+  const blue = Math.round(blue1 + (blue2 - blue1) * progress)
+
+  return rgbToHex(red, green, blue)
+}
