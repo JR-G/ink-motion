@@ -1,8 +1,9 @@
 import { Text } from 'ink'
 import React, { useMemo, useState } from 'react'
-import type { BaseEffectProps, Color } from '../types/index.js'
+import type { BaseEffectProps, Colour } from '../types/index.js'
 import { useAnimationFrame } from '../hooks/useAnimationFrame.js'
 import { colorize, interpolateColor } from '../utils/colors.js'
+import { clamp } from '../utils/easing.js'
 import { getTextLength, mapChars } from '../utils/text.js'
 
 type ShimmerDirection = 'left' | 'right'
@@ -13,7 +14,7 @@ interface ShimmerProps extends BaseEffectProps {
    * @default ['#666666', '#ffffff', '#666666']
    * @example ['#60a5fa', '#3b82f6', '#60a5fa']
    */
-  colors?: [Color, Color, Color]
+  colors?: [Colour, Colour, Colour]
 
   /**
    * Width of the shimmer band in characters
@@ -34,7 +35,7 @@ interface ShimmerProps extends BaseEffectProps {
   direction?: ShimmerDirection
 }
 
-const DEFAULT_COLORS: [Color, Color, Color] = ['#666666', '#ffffff', '#666666']
+const DEFAULT_COLORS: [Colour, Colour, Colour] = ['#666666', '#ffffff', '#666666']
 const DEFAULT_WIDTH = 4
 const DEFAULT_INTENSITY = 1
 const DEFAULT_DIRECTION: ShimmerDirection = 'right'
@@ -100,7 +101,7 @@ export function Shimmer({
         : 1
 
       const [startColor, peakColor, endColor] = colors
-      const adjustedIntensity = Math.min(Math.max(intensity, MIN_INTENSITY), MAX_INTENSITY)
+      const adjustedIntensity = clamp(intensity, MIN_INTENSITY, MAX_INTENSITY)
 
       const isFirstHalf = colorProgress < COLOUR_TRANSITION_MIDPOINT
       const currentColor = isFirstHalf

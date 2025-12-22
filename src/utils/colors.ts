@@ -1,16 +1,20 @@
 import chalk from 'chalk'
-import type { Color } from '../types/index.js'
+import type { Colour } from '../types/index.js'
 
-const HEX_BASE_16 = 16
+const HEX_BASE = 16
+const DECIMAL_BASE = 10
 const HEX_BYTE_LENGTH = 2
 const HEX_PAD_CHARACTER = '0'
 const MIN_RGB_COMPONENTS = 3
 const INTERPOLATION_MIDPOINT = 0.5
 
+const HEX_COLOR_REGEX = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i
+const RGB_NUMBERS_REGEX = /\d+/g
+
 function rgbToHex(red: number, green: number, blue: number): string {
-  const redHex = red.toString(HEX_BASE_16).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
-  const greenHex = green.toString(HEX_BASE_16).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
-  const blueHex = blue.toString(HEX_BASE_16).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
+  const redHex = red.toString(HEX_BASE).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
+  const greenHex = green.toString(HEX_BASE).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
+  const blueHex = blue.toString(HEX_BASE).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
   return `#${redHex}${greenHex}${blueHex}`
 }
 
@@ -21,15 +25,15 @@ function rgbToHex(red: number, green: number, blue: number): string {
  * @returns Tuple of [red, green, blue] values (0-255) or null if invalid
  */
 export function hexToRgb(hex: string): [number, number, number] | null {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  const result = HEX_COLOR_REGEX.exec(hex)
   if (!result)
     return null
 
   const [, redHex, greenHex, blueHex] = result
   return [
-    Number.parseInt(redHex!, HEX_BASE_16),
-    Number.parseInt(greenHex!, HEX_BASE_16),
-    Number.parseInt(blueHex!, HEX_BASE_16),
+    Number.parseInt(redHex, HEX_BASE),
+    Number.parseInt(greenHex, HEX_BASE),
+    Number.parseInt(blueHex, HEX_BASE),
   ]
 }
 
@@ -40,28 +44,36 @@ export function hexToRgb(hex: string): [number, number, number] | null {
  * @param color - Color as hex (#ff0000), rgb(255,0,0), or named color (red, blue, etc)
  * @returns Colorized text with ANSI escape codes
  */
-export function colorize(text: string, color: Color): string {
-  if (color.startsWith('#'))
-    return chalk.hex(color)(text)
+export function colorize(text: string, color: Colour): string {
+  try {
+    if (color.startsWith('#'))
+      return chalk.hex(color)(text)
 
-  if (color.startsWith('rgb')) {
-    const match = color.match(/\d+/g)
-    const hasEnoughComponents = match && match.length >= MIN_RGB_COMPONENTS
-    if (!hasEnoughComponents)
-      return text
+    if (color.startsWith('rgb')) {
+      const match = color.match(RGB_NUMBERS_REGEX)
+      if (!match || match.length < MIN_RGB_COMPONENTS)
+        return text
 
-    const [redStr, greenStr, blueStr] = match
-    const red = Number.parseInt(redStr!)
-    const green = Number.parseInt(greenStr!)
-    const blue = Number.parseInt(blueStr!)
-    return chalk.rgb(red, green, blue)(text)
+      const [redStr, greenStr, blueStr] = match
+      const red = Number.parseInt(redStr, DECIMAL_BASE)
+      const green = Number.parseInt(greenStr, DECIMAL_BASE)
+      const blue = Number.parseInt(blueStr, DECIMAL_BASE)
+
+      if (Number.isNaN(red) || Number.isNaN(green) || Number.isNaN(blue))
+        return text
+
+      return chalk.rgb(red, green, blue)(text)
+    }
+
+    const chalkColor = chalk[color as keyof typeof chalk]
+    if (typeof chalkColor === 'function')
+      return chalkColor(text)
+
+    return text
   }
-
-  const chalkColor = chalk[color as keyof typeof chalk]
-  if (typeof chalkColor === 'function')
-    return chalkColor(text)
-
-  return text
+  catch {
+    return text
+  }
 }
 
 /**
@@ -72,7 +84,7 @@ export function colorize(text: string, color: Color): string {
  * @param opacity - Opacity value from 0 (transparent/black) to 1 (fully opaque)
  * @returns Adjusted hex color or original color if not hex format
  */
-export function applyOpacity(color: Color, opacity: number): Color {
+export function applyOpacity(color: Colour, opacity: number): Colour {
   if (!color.startsWith('#'))
     return color
 
@@ -97,10 +109,10 @@ export function applyOpacity(color: Color, opacity: number): Color {
  * @returns Interpolated color (hex if both inputs are hex, otherwise snaps to nearest)
  */
 export function interpolateColor(
-  color1: Color,
-  color2: Color,
+  color1: Colour,
+  color2: Colour,
   progress: number,
-): Color {
+): Colour {
   const isColor1Hex = color1.startsWith('#')
   const isColor2Hex = color2.startsWith('#')
 

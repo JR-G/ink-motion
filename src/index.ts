@@ -9,17 +9,9 @@ export { useCursorBlink } from './hooks/useCursorBlink.js'
 export { useTypewriterProgress } from './hooks/useTypewriterProgress.js'
 
 export type {
+  Colour,
   Color,
-  Opacity,
-  Speed,
-  Intensity,
   BaseEffectProps,
   EasingFunction,
   EasingName,
-} from './types/index.js'
-
-export {
-  createOpacity,
-  createSpeed,
-  createIntensity,
 } from './types/index.js'

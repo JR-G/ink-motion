@@ -1,6 +1,6 @@
 import { Text } from 'ink'
 import React, { useMemo } from 'react'
-import type { BaseEffectProps, Color } from '../types/index.js'
+import type { BaseEffectProps, Colour } from '../types/index.js'
 import { useCursorBlink } from '../hooks/useCursorBlink.js'
 import { useTypewriterProgress } from '../hooks/useTypewriterProgress.js'
 import { colorize } from '../utils/colors.js'
@@ -12,7 +12,7 @@ interface TypewriterProps extends BaseEffectProps {
    * @default undefined (inherits)
    * @example 'green'
    */
-  color?: Color
+  color?: Colour
 
   /**
    * Cursor character or false to disable
@@ -26,7 +26,7 @@ interface TypewriterProps extends BaseEffectProps {
    * @default undefined
    * @example 'cyan'
    */
-  cursorColor?: Color
+  cursorColor?: Colour
 
   /**
    * Typing speed randomness (0-1) for more human-like typing
@@ -53,8 +53,8 @@ function getCursorCharacter(cursor: string | boolean): string {
 
 function formatCursor(
   cursorCharacter: string,
-  cursorColor: Color | undefined,
-  textColor: Color | undefined,
+  cursorColor: Colour | undefined,
+  textColor: Colour | undefined,
 ): string {
   if (cursorColor)
     return colorize(cursorCharacter, cursorColor)

@@ -1,8 +1,9 @@
 import { Text } from 'ink'
 import React, { useMemo } from 'react'
-import type { BaseEffectProps, Color } from '../types/index.js'
+import type { BaseEffectProps, Colour } from '../types/index.js'
 import { useElapsedTime } from '../hooks/useElapsedTime.js'
 import { colorize, interpolateColor } from '../utils/colors.js'
+import { clamp } from '../utils/easing.js'
 import { mapChars } from '../utils/text.js'
 
 type WaveType = 'brightness' | 'vertical'
@@ -13,7 +14,7 @@ interface WaveProps extends BaseEffectProps {
    * @default ['#888888', '#ffffff']
    * @example ['#ec4899', '#8b5cf6']
    */
-  colors?: [Color, Color]
+  colors?: [Colour, Colour]
 
   /**
    * Wave height (0-1)
@@ -34,7 +35,7 @@ interface WaveProps extends BaseEffectProps {
   type?: WaveType
 }
 
-const DEFAULT_COLORS: [Color, Color] = ['#888888', '#ffffff']
+const DEFAULT_COLORS: [Colour, Colour] = ['#888888', '#ffffff']
 const DEFAULT_AMPLITUDE = 0.5
 const DEFAULT_FREQUENCY = 2
 const DEFAULT_TYPE: WaveType = 'brightness'
@@ -53,8 +54,9 @@ function calculateWaveValue(
   frequency: number,
   amplitude: number,
 ): number {
-  const clampedAmplitude = Math.min(Math.max(amplitude, MIN_AMPLITUDE), MAX_AMPLITUDE)
-  const waveLength = FULL_CIRCLE_RADIANS / frequency
+  const clampedAmplitude = clamp(amplitude, MIN_AMPLITUDE, MAX_AMPLITUDE)
+  const safeFrequency = frequency || DEFAULT_FREQUENCY
+  const waveLength = FULL_CIRCLE_RADIANS / safeFrequency
   const spatialComponent = (characterIndex / waveLength) * FULL_CIRCLE_RADIANS
   const temporalComponent = time * FULL_CIRCLE_RADIANS
   const phase = spatialComponent - temporalComponent

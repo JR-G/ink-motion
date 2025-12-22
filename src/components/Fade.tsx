@@ -1,6 +1,6 @@
 import { Text } from 'ink'
 import React, { useEffect, useMemo, useState } from 'react'
-import type { BaseEffectProps, Color, EasingName } from '../types/index.js'
+import type { BaseEffectProps, Colour, EasingName } from '../types/index.js'
 import { useElapsedTime } from '../hooks/useElapsedTime.js'
 import { applyOpacity, colorize } from '../utils/colors.js'
 import { getEasingFunction } from '../utils/easing.js'
@@ -11,7 +11,7 @@ interface FadeProps extends BaseEffectProps {
    * @default '#ffffff'
    * @example 'yellow'
    */
-  color?: Color
+  color?: Colour
 
   /**
    * Starting opacity (0-1)

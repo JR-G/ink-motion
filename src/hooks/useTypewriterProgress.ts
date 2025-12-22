@@ -1,20 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
+import { clamp } from '../utils/easing.js'
 
 const BASE_CHARACTER_DELAY_MS = 80
 const MIN_VARIANCE = 0
 const MAX_VARIANCE = 1
-const VARIANCE_CENTER = 0.5
-const NO_VARIANCE_MULTIPLIER = 1
 const FIRST_CHARACTER_INDEX = 0
-const INCREMENT_BY_ONE = 1
 
 function calculateCharacterDelay(
   speed: number,
   variance: number,
 ): number {
-  const clampedVariance = Math.min(Math.max(variance, MIN_VARIANCE), MAX_VARIANCE)
-  const randomVariance = (Math.random() - VARIANCE_CENTER) * clampedVariance
-  return (BASE_CHARACTER_DELAY_MS / speed) * (NO_VARIANCE_MULTIPLIER + randomVariance)
+  const clampedVariance = clamp(variance, MIN_VARIANCE, MAX_VARIANCE)
+  const randomVariance = (Math.random() - 0.5) * clampedVariance
+  return (BASE_CHARACTER_DELAY_MS / speed) * (1 + randomVariance)
 }
 
 interface UseTypewriterProgressOptions {
@@ -58,7 +56,7 @@ export function useTypewriterProgress({
     const totalDelay = isFirstCharacter ? initialDelay + characterDelay : characterDelay
 
     timeoutRef.current = setTimeout(() => {
-      setVisibleCharacters(previous => previous + INCREMENT_BY_ONE)
+      setVisibleCharacters(previous => previous + 1)
     }, totalDelay)
 
     return () => {
