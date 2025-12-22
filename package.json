@@ -24,7 +24,9 @@
     "shimmer",
     "typewriter",
     "fade",
-    "wave"
+    "wave",
+    "flash",
+    "neon"
   ],
   "exports": {
     ".": {

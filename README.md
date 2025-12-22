@@ -4,7 +4,7 @@ Beautiful, performant text effects and animations for [Ink](https://github.com/v
 
 ## Features
 
-- 🎨 **Rich text effects**: Shimmer, Typewriter, Fade, Wave
+- 🎨 **Rich text effects**: Shimmer, Typewriter, Fade, Wave, Flash
 - ⚡ **Performant**: Optimised animations with minimal re-renders
 - 🔧 **Highly customisable**: Control colours, speed, intensity, and more
 - 📦 **Type-safe**: Full TypeScript support with strict types
@@ -48,6 +48,7 @@ render(<App />)
 - **Typewriter** - Character-by-character typing animation
 - **Fade** - Smooth fade in/out transitions
 - **Wave** - Wave motion through text
+- **Flash** - Pulsing neon-like glow effect
 
 ## Demo
 

@@ -1,6 +1,6 @@
 import { Box, render, Text } from 'ink'
 import React, { useState } from 'react'
-import { Fade, Shimmer, Typewriter, Wave } from '../src/index.js'
+import { Fade, Flash, Shimmer, Typewriter, Wave } from '../src/index.js'
 
 function Demo() {
   const [typewriterKey, setTypewriterKey] = useState(0)
@@ -47,6 +47,13 @@ function Demo() {
           <Wave colors={['#0000ff', '#ffff00']} amplitude={0.8} frequency={1} speed={2}>
             ~~~~~~~~ flowing wave ~~~~~~~~
           </Wave>
+        </Box>
+
+        <Box>
+          <Text dimColor>Flash: </Text>
+          <Flash color="#00ffff" minIntensity={0.3} maxIntensity={1} duration={800} speed={1.5}>
+            ⚡ NEON GLOW ⚡
+          </Flash>
         </Box>
       </Box>
     </Box>
