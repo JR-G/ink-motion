@@ -87,27 +87,15 @@ Combine multiple effects for richer animations:
 All components are fully typed. Import types from the package:
 
 ```tsx
-import type { Color, EasingName } from 'ink-motion'
+import type { Colour, EasingName } from 'ink-motion'
 ```
 
 ### Available Types
 
-- `Color` - String type for colour values
-- `Opacity` - Branded number type (0-1) for opacity values
-- `Speed` - Branded number type (>0) for speed values
-- `Intensity` - Branded number type (0-1) for intensity values
+- `Colour` - String type for colour values (hex, rgb, or named colours)
+- `Color` - Deprecated alias for `Colour` (use `Colour` for UK spelling)
 - `EasingName` - Union type of easing function names
 - `EasingFunction` - Function type for easing functions
 - `BaseEffectProps` - Shared props interface
 
-### Type Validators
-
-Use these functions to create branded types with runtime validation:
-
-```tsx
-import { createOpacity, createSpeed, createIntensity } from 'ink-motion'
-
-const opacity = createOpacity(0.5)
-const speed = createSpeed(2)
-const intensity = createIntensity(0.8)
-```
+All numeric values (speed, opacity, intensity, amplitude, etc.) are plain numbers with sensible defaults and automatic clamping where appropriate.
