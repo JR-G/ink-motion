@@ -54,7 +54,7 @@ render(<App />)
 See all effects in action:
 
 ```bash
-git clone https://github.com/your-username/ink-motion
+git clone https://github.com/JR-G/ink-motion
 cd ink-motion
 bun install
 bun run demo
