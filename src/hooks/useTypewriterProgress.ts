@@ -28,6 +28,12 @@ interface UseTypewriterProgressOptions {
  * Hook that manages typewriter character reveal timing
  *
  * @param options - Configuration for typewriter progress
+ * @param options.totalCharacters - Total number of characters to reveal
+ * @param options.speed - Animation speed multiplier
+ * @param options.variance - Typing variance for human-like timing (0-1)
+ * @param options.initialDelay - Delay before typing starts in milliseconds
+ * @param options.enabled - Whether the animation is enabled
+ * @param options.onComplete - Callback when typing completes
  * @returns Number of characters to display
  */
 export function useTypewriterProgress({

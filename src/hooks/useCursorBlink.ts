@@ -11,6 +11,8 @@ interface UseCursorBlinkOptions {
  * Hook that manages cursor blinking state
  *
  * @param options - Configuration for cursor blink
+ * @param options.enabled - Whether cursor blinking is enabled
+ * @param options.isComplete - Whether typing is complete
  * @returns Whether cursor should be visible
  */
 export function useCursorBlink({
@@ -22,6 +24,7 @@ export function useCursorBlink({
 
   useEffect(() => {
     if (!enabled || isComplete) {
+      // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect -- Intentional: synchronizing cursor visibility with prop changes
       setShowCursor(false)
       return
     }
