@@ -1,6 +1,6 @@
-import { Text } from 'ink'
-import React, { useEffect, useMemo, useState } from 'react'
 import type { BaseEffectProps, Colour, EasingName } from '../types/index.js'
+import { Text } from 'ink'
+import { useEffect, useMemo, useState } from 'react'
 import { useElapsedTime } from '../hooks/useElapsedTime.js'
 import { applyOpacity, colorize } from '../utils/colors.js'
 import { getEasingFunction } from '../utils/easing.js'
@@ -98,6 +98,7 @@ export function Fade({
     const isComplete = elapsedTime >= duration
 
     if (isComplete && !loop && !hasCompleted) {
+      // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect -- Intentional: prevents calling onComplete multiple times by setting completion flag once
       setHasCompleted(true)
       onComplete?.()
     }
