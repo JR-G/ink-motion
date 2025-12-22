@@ -1,6 +1,6 @@
-import { Text } from 'ink'
-import React, { useMemo } from 'react'
 import type { BaseEffectProps, Colour } from '../types/index.js'
+import { Text } from 'ink'
+import { useMemo } from 'react'
 import { useCursorBlink } from '../hooks/useCursorBlink.js'
 import { useTypewriterProgress } from '../hooks/useTypewriterProgress.js'
 import { colorize } from '../utils/colors.js'

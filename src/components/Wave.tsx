@@ -1,6 +1,6 @@
-import { Text } from 'ink'
-import React, { useMemo } from 'react'
 import type { BaseEffectProps, Colour } from '../types/index.js'
+import { Text } from 'ink'
+import { useMemo } from 'react'
 import { useElapsedTime } from '../hooks/useElapsedTime.js'
 import { colorize, interpolateColor } from '../utils/colors.js'
 import { clamp } from '../utils/easing.js'
