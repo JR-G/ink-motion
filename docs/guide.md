@@ -13,13 +13,13 @@ All components share these common props:
 - **`enabled?: boolean`** - Enable/disable animation (default: `true`)
 - **`onComplete?: () => void`** - Callback when animation completes (if applicable)
 
-## Colour Format
+## Color Format
 
-All components accept colours in these formats:
+All components accept colors in these formats:
 
 - **Hex**: `'#ff0000'`
 - **RGB**: `'rgb(255, 0, 0)'`
-- **Named**: `'red'`, `'blue'`, `'green'`, etc. (any valid chalk colour)
+- **Named**: `'red'`, `'blue'`, `'green'`, etc. (any valid chalk color)
 
 ## Easing Functions
 
@@ -34,7 +34,7 @@ The Fade component supports these easing functions:
 
 1. **Avoid unnecessary re-renders**: Wrap component props in `useMemo` if they're computed
 2. **Use `enabled` prop**: Disable animations when not visible
-3. **Optimise colours**: Hex colours (`#rrggbb`) are faster than RGB strings
+3. **Optimise colors**: Hex colors (`#rrggbb`) are faster than RGB strings
 4. **Adjust speed**: Lower speeds (< 1) reduce CPU usage
 
 ## Advanced Patterns
@@ -87,7 +87,7 @@ Combine multiple effects for richer animations:
 All components are fully typed with strict TypeScript support. Import types as needed:
 
 ```tsx
-import type { Colour, EasingName, BaseEffectProps } from 'ink-motion'
+import type { Color, EasingName, BaseEffectProps } from 'ink-motion'
 ```
 
 See the exported types in `src/types/index.ts` for full type definitions.

@@ -1,4 +1,4 @@
-import type { Colour } from '../types/index.js'
+import type { Color } from '../types/index.js'
 import chalk from 'chalk'
 
 const HEX_BASE = 16
@@ -30,6 +30,9 @@ export function hexToRgb(hex: string): [number, number, number] | null {
     return null
 
   const [, redHex, greenHex, blueHex] = result
+  if (!redHex || !greenHex || !blueHex)
+    return null
+
   return [
     Number.parseInt(redHex, HEX_BASE),
     Number.parseInt(greenHex, HEX_BASE),
@@ -44,7 +47,7 @@ export function hexToRgb(hex: string): [number, number, number] | null {
  * @param color - Color as hex (#ff0000), rgb(255,0,0), or named color (red, blue, etc)
  * @returns Colorized text with ANSI escape codes
  */
-export function colorize(text: string, color: Colour): string {
+export function colorize(text: string, color: Color): string {
   try {
     if (color.startsWith('#'))
       return chalk.hex(color)(text)
@@ -55,6 +58,9 @@ export function colorize(text: string, color: Colour): string {
         return text
 
       const [redStr, greenStr, blueStr] = match
+      if (!redStr || !greenStr || !blueStr)
+        return text
+
       const red = Number.parseInt(redStr, DECIMAL_BASE)
       const green = Number.parseInt(greenStr, DECIMAL_BASE)
       const blue = Number.parseInt(blueStr, DECIMAL_BASE)
@@ -65,7 +71,7 @@ export function colorize(text: string, color: Colour): string {
       return chalk.rgb(red, green, blue)(text)
     }
 
-    const chalkColor = chalk[color as keyof typeof chalk]
+    const chalkColor = (chalk as any)[color]
     if (typeof chalkColor === 'function')
       return chalkColor(text)
 
@@ -84,7 +90,7 @@ export function colorize(text: string, color: Colour): string {
  * @param opacity - Opacity value from 0 (transparent/black) to 1 (fully opaque)
  * @returns Adjusted hex color or original color if not hex format
  */
-export function applyOpacity(color: Colour, opacity: number): Colour {
+export function applyOpacity(color: Color, opacity: number): Color {
   if (!color.startsWith('#'))
     return color
 
@@ -109,10 +115,10 @@ export function applyOpacity(color: Colour, opacity: number): Colour {
  * @returns Interpolated color (hex if both inputs are hex, otherwise snaps to nearest)
  */
 export function interpolateColor(
-  color1: Colour,
-  color2: Colour,
+  color1: Color,
+  color2: Color,
   progress: number,
-): Colour {
+): Color {
   const isColor1Hex = color1.startsWith('#')
   const isColor2Hex = color2.startsWith('#')
 

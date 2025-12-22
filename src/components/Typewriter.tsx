@@ -1,4 +1,4 @@
-import type { BaseEffectProps, Colour } from '../types/index.js'
+import type { BaseEffectProps, Color } from '../types/index.js'
 import { Text } from 'ink'
 import { useMemo } from 'react'
 import { useCursorBlink } from '../hooks/useCursorBlink.js'
@@ -8,11 +8,11 @@ import { getTextLength, splitChars } from '../utils/text.js'
 
 interface TypewriterProps extends BaseEffectProps {
   /**
-   * Text colour
+   * Text color
    * @default undefined (inherits)
    * @example 'green'
    */
-  color?: Colour
+  color?: Color
 
   /**
    * Cursor character or false to disable
@@ -22,11 +22,11 @@ interface TypewriterProps extends BaseEffectProps {
   cursor?: string | boolean
 
   /**
-   * Cursor colour (defaults to text colour)
+   * Cursor color (defaults to text color)
    * @default undefined
    * @example 'cyan'
    */
-  cursorColor?: Colour
+  cursorColor?: Color
 
   /**
    * Typing speed randomness (0-1) for more human-like typing
@@ -53,8 +53,8 @@ function getCursorCharacter(cursor: string | boolean): string {
 
 function formatCursor(
   cursorCharacter: string,
-  cursorColor: Colour | undefined,
-  textColor: Colour | undefined,
+  cursorColor: Color | undefined,
+  textColor: Color | undefined,
 ): string {
   if (cursorColor)
     return colorize(cursorCharacter, cursorColor)

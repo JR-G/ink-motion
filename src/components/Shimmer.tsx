@@ -1,4 +1,4 @@
-import type { BaseEffectProps, Colour } from '../types/index.js'
+import type { BaseEffectProps, Color } from '../types/index.js'
 import { Text } from 'ink'
 import { useMemo, useState } from 'react'
 import { useAnimationFrame } from '../hooks/useAnimationFrame.js'
@@ -14,7 +14,7 @@ interface ShimmerProps extends BaseEffectProps {
    * @default ['#666666', '#ffffff', '#666666']
    * @example ['#60a5fa', '#3b82f6', '#60a5fa']
    */
-  colors?: [Colour, Colour, Colour]
+  colors?: [Color, Color, Color]
 
   /**
    * Width of the shimmer band in characters
@@ -35,7 +35,7 @@ interface ShimmerProps extends BaseEffectProps {
   direction?: ShimmerDirection
 }
 
-const DEFAULT_COLORS: [Colour, Colour, Colour] = ['#666666', '#ffffff', '#666666']
+const DEFAULT_COLORS: [Color, Color, Color] = ['#666666', '#ffffff', '#666666']
 const DEFAULT_WIDTH = 4
 const DEFAULT_INTENSITY = 1
 const DEFAULT_DIRECTION: ShimmerDirection = 'right'

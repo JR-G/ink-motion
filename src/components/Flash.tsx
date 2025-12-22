@@ -1,4 +1,4 @@
-import type { BaseEffectProps, Colour } from '../types/index.js'
+import type { BaseEffectProps, Color } from '../types/index.js'
 import { Text } from 'ink'
 import { useMemo } from 'react'
 import { useElapsedTime } from '../hooks/useElapsedTime.js'
@@ -7,11 +7,11 @@ import { clamp } from '../utils/easing.js'
 
 interface FlashProps extends BaseEffectProps {
   /**
-   * Text colour
+   * Base color
    * @default '#ffffff'
    * @example 'cyan'
    */
-  color?: Colour
+  color?: Color
 
   /**
    * Minimum brightness (0-1)

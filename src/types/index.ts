@@ -1,13 +1,7 @@
 /**
- * Colour value as hex (#ff0000), rgb (rgb(255,0,0)), or named (red, blue, etc.)
- * Note: Props use 'color' (US spelling) for React convention, but type uses UK spelling
+ * Color value as hex (#ff0000), rgb (rgb(255,0,0)), or named (red, blue, etc.)
  */
-export type Colour = string
-
-/**
- * @deprecated Use Colour instead
- */
-export type Color = Colour
+export type Color = string
 
 /**
  * Easing function that takes normalised time (0-1) and returns eased value (0-1)

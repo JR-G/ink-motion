@@ -12,7 +12,6 @@ export { useTypewriterProgress } from './hooks/useTypewriterProgress.js'
 export type {
   BaseEffectProps,
   Color,
-  Colour,
   EasingFunction,
   EasingName,
 } from './types/index.js'

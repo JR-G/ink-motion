@@ -1,4 +1,4 @@
-import type { BaseEffectProps, Colour } from '../types/index.js'
+import type { BaseEffectProps, Color } from '../types/index.js'
 import { Text } from 'ink'
 import { useMemo } from 'react'
 import { useElapsedTime } from '../hooks/useElapsedTime.js'
@@ -10,11 +10,11 @@ type WaveType = 'brightness' | 'vertical'
 
 interface WaveProps extends BaseEffectProps {
   /**
-   * Gradient colours for the wave [dark, bright]
+   * Gradient colors for the wave [dark, bright]
    * @default ['#888888', '#ffffff']
    * @example ['#ec4899', '#8b5cf6']
    */
-  colors?: [Colour, Colour]
+  colors?: [Color, Color]
 
   /**
    * Wave height (0-1)
@@ -35,7 +35,7 @@ interface WaveProps extends BaseEffectProps {
   type?: WaveType
 }
 
-const DEFAULT_COLORS: [Colour, Colour] = ['#888888', '#ffffff']
+const DEFAULT_COLORS: [Color, Color] = ['#888888', '#ffffff']
 const DEFAULT_AMPLITUDE = 0.5
 const DEFAULT_FREQUENCY = 2
 const DEFAULT_TYPE: WaveType = 'brightness'
