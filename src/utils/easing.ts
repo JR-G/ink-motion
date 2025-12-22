@@ -12,11 +12,20 @@ export const easeInOut: EasingFunction = (time) => {
     : -1 + (4 - 2 * time) * time
 }
 
+export const sineIn: EasingFunction = time => 1 - Math.cos((time * Math.PI) / 2)
+
+export const sineOut: EasingFunction = time => Math.sin((time * Math.PI) / 2)
+
+export const sineInOut: EasingFunction = time => -(Math.cos(Math.PI * time) - 1) / 2
+
 export const easingFunctions: Record<EasingName, EasingFunction> = {
   'linear': linear,
   'ease-in': easeIn,
   'ease-out': easeOut,
   'ease-in-out': easeInOut,
+  'sine-in': sineIn,
+  'sine-out': sineOut,
+  'sine-in-out': sineInOut,
 }
 
 export function getEasingFunction(name: EasingName = 'linear'): EasingFunction {

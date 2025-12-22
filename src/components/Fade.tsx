@@ -2,7 +2,7 @@ import type { BaseEffectProps, Color, EasingName } from '../types/index.js'
 import { Text } from 'ink'
 import { useEffect, useMemo, useState } from 'react'
 import { useElapsedTime } from '../hooks/useElapsedTime.js'
-import { applyOpacity, colorize } from '../utils/colors.js'
+import { colorize, interpolateColor } from '../utils/colors.js'
 import { getEasingFunction } from '../utils/easing.js'
 
 interface FadeProps extends BaseEffectProps {
@@ -47,7 +47,7 @@ interface FadeProps extends BaseEffectProps {
 const DEFAULT_FROM = 0
 const DEFAULT_TO = 1
 const DEFAULT_DURATION_MS = 1000
-const DEFAULT_EASING: EasingName = 'ease-out'
+const DEFAULT_EASING: EasingName = 'sine-in-out'
 const DEFAULT_LOOP = false
 const DEFAULT_SPEED = 1
 
@@ -68,6 +68,10 @@ function calculateOpacity(
  *
  * Animates text from one opacity to another using configurable easing functions.
  * Can loop continuously or run once.
+ *
+ * Note: Optimized for dark terminals. Fades to/from black which appears as true
+ * transparency on dark backgrounds. On light terminals, low opacity text may appear
+ * visible as dark text. For best results on all terminals, use bright colors.
  *
  * @example
  * ```tsx
@@ -105,11 +109,24 @@ export function Fade({
   }, [elapsedTime, duration, loop, hasCompleted, enabled, onComplete])
 
   const fadedText = useMemo(() => {
-    const effectiveTime = loop ? elapsedTime % duration : Math.min(elapsedTime, duration)
+    let effectiveTime = elapsedTime
+    if (loop) {
+      const cycleTime = elapsedTime % (duration * 2)
+      effectiveTime = cycleTime > duration ? (duration * 2) - cycleTime : cycleTime
+    }
+    else {
+      effectiveTime = Math.min(elapsedTime, duration)
+    }
+
     const opacity = calculateOpacity(effectiveTime, duration, from, to, easing)
 
+    if (opacity < 0.01) {
+      return ''
+    }
+
     const baseColor = color ?? '#ffffff'
-    const fadedColor = applyOpacity(baseColor, opacity)
+    const elegantOpacity = opacity ** 1.5
+    const fadedColor = interpolateColor('#000000', baseColor, elegantOpacity)
 
     return colorize(children, fadedColor)
   }, [children, elapsedTime, duration, from, to, easing, color, loop])

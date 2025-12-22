@@ -11,7 +11,14 @@ export type EasingFunction = (time: number) => number
 /**
  * Named easing functions
  */
-export type EasingName = 'linear' | 'ease-in' | 'ease-out' | 'ease-in-out'
+export type EasingName
+  = 'linear'
+    | 'ease-in'
+    | 'ease-out'
+    | 'ease-in-out'
+    | 'sine-in'
+    | 'sine-out'
+    | 'sine-in-out'
 
 /**
  * Base props shared by all effect components

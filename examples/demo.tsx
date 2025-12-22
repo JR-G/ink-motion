@@ -37,7 +37,7 @@ function Demo() {
 
         <Box>
           <Text dimColor>Fade: </Text>
-          <Fade color="#fbbf24" from={0.2} to={1} duration={1500} loop easing="ease-in-out">
+          <Fade color="#fbbf24" from={0} to={1} duration={1500} loop easing="ease-in-out">
             Success!
           </Fade>
         </Box>
