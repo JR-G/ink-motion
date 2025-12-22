@@ -23,7 +23,6 @@ pnpm add ink-motion
 ```tsx
 import { render } from 'ink'
 import { Shimmer, Typewriter } from 'ink-motion'
-import React from 'react'
 
 function App() {
   return (

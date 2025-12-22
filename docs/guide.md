@@ -84,18 +84,10 @@ Combine multiple effects for richer animations:
 
 ## TypeScript
 
-All components are fully typed. Import types from the package:
+All components are fully typed with strict TypeScript support. Import types as needed:
 
 ```tsx
-import type { Colour, EasingName } from 'ink-motion'
+import type { Colour, EasingName, BaseEffectProps } from 'ink-motion'
 ```
 
-### Available Types
-
-- `Colour` - String type for colour values (hex, rgb, or named colours)
-- `Color` - Deprecated alias for `Colour` (use `Colour` for UK spelling)
-- `EasingName` - Union type of easing function names
-- `EasingFunction` - Function type for easing functions
-- `BaseEffectProps` - Shared props interface
-
-All numeric values (speed, opacity, intensity, amplitude, etc.) are plain numbers with sensible defaults and automatic clamping where appropriate.
+See the exported types in `src/types/index.ts` for full type definitions.
