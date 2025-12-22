@@ -1,6 +1,5 @@
-import { render } from 'ink-testing-library'
-import React from 'react'
 import { describe, expect, it } from 'bun:test'
+import { render } from 'ink-testing-library'
 import { Fade } from '../src/components/Fade.js'
 
 describe('Fade', () => {

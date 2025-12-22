@@ -1,6 +1,6 @@
-import { Text } from 'ink'
-import React, { useMemo, useState } from 'react'
 import type { BaseEffectProps, Colour } from '../types/index.js'
+import { Text } from 'ink'
+import { useMemo, useState } from 'react'
 import { useAnimationFrame } from '../hooks/useAnimationFrame.js'
 import { colorize, interpolateColor } from '../utils/colors.js'
 import { clamp } from '../utils/easing.js'
@@ -106,15 +106,15 @@ export function Shimmer({
       const isFirstHalf = colorProgress < COLOUR_TRANSITION_MIDPOINT
       const currentColor = isFirstHalf
         ? interpolateColor(
-          startColor,
-          peakColor,
-          colorProgress * COLOUR_PROGRESS_MULTIPLIER * adjustedIntensity,
-        )
+            startColor,
+            peakColor,
+            colorProgress * COLOUR_PROGRESS_MULTIPLIER * adjustedIntensity,
+          )
         : interpolateColor(
-          peakColor,
-          endColor,
-          (colorProgress - COLOUR_TRANSITION_MIDPOINT) * COLOUR_PROGRESS_MULTIPLIER * adjustedIntensity,
-        )
+            peakColor,
+            endColor,
+            (colorProgress - COLOUR_TRANSITION_MIDPOINT) * COLOUR_PROGRESS_MULTIPLIER * adjustedIntensity,
+          )
 
       return colorize(char, currentColor)
     })

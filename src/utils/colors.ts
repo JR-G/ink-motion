@@ -1,5 +1,5 @@
-import chalk from 'chalk'
 import type { Colour } from '../types/index.js'
+import chalk from 'chalk'
 
 const HEX_BASE = 16
 const DECIMAL_BASE = 10

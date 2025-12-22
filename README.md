@@ -21,9 +21,9 @@ pnpm add ink-motion
 ## Quick Start
 
 ```tsx
-import React from 'react'
 import { render } from 'ink'
 import { Shimmer, Typewriter } from 'ink-motion'
+import React from 'react'
 
 function App() {
   return (

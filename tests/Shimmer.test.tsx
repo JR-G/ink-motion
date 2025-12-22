@@ -1,6 +1,5 @@
-import { render } from 'ink-testing-library'
-import React from 'react'
 import { describe, expect, it } from 'bun:test'
+import { render } from 'ink-testing-library'
 import { Shimmer } from '../src/components/Shimmer.js'
 
 describe('Shimmer', () => {
