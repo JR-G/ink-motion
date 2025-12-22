@@ -14,7 +14,7 @@ function Demo() {
       <Box flexDirection="column" gap={1}>
         <Box>
           <Text dimColor>Shimmer: </Text>
-          <Shimmer colors={['#60a5fa', '#3b82f6', '#60a5fa']} intensity={0.8} speed={1.5}>
+          <Shimmer colors={['#3b82f6', '#93c5fd', '#3b82f6']} intensity={1} speed={0.8}>
             Loading your data...
           </Shimmer>
         </Box>
@@ -26,7 +26,7 @@ function Demo() {
             color="green"
             cursor="█"
             variance={0.4}
-            speed={2}
+            speed={1.5}
             onComplete={() => {
               setTimeout(() => setTypewriterKey(previous => previous + 1), 1000)
             }}
