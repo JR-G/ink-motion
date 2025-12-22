@@ -1,4 +1,5 @@
 export { Fade } from './components/Fade.js'
+export { Flash } from './components/Flash.js'
 export { Shimmer } from './components/Shimmer.js'
 export { Typewriter } from './components/Typewriter.js'
 export { Wave } from './components/Wave.js'
