@@ -21,14 +21,113 @@ All components accept colors in these formats:
 - **RGB**: `'rgb(255, 0, 0)'`
 - **Named**: `'red'`, `'blue'`, `'green'`, etc. (any valid chalk color)
 
+## Component Props
+
+### Shimmer
+
+```tsx
+<Shimmer
+  colors={['#666666', '#ffffff', '#666666']}
+  width={4}
+  intensity={1}
+  direction="right"
+  speed={1}
+  enabled
+/>
+```
+
+- **`colors?: [Color, Color, Color]`** - Gradient colors `[start, peak, end]`
+- **`width?: number`** - Shimmer band width (characters)
+- **`intensity?: number`** - Brightness multiplier (0-1)
+- **`direction?: 'left' | 'right'`** - Movement direction
+
+### Typewriter
+
+```tsx
+<Typewriter
+  color="green"
+  cursor="▋"
+  cursorColor="cyan"
+  variance={0.3}
+  delay={0}
+  speed={1}
+  enabled
+/>
+```
+
+- **`color?: Color`** - Text color
+- **`cursor?: string | boolean`** - Cursor character or `false` to disable
+- **`cursorColor?: Color`** - Cursor color (defaults to `color`)
+- **`variance?: number`** - Typing speed randomness (0-1)
+- **`delay?: number`** - Initial delay (ms)
+
+### Fade
+
+```tsx
+<Fade
+  color="#ffffff"
+  from={0}
+  to={1}
+  duration={1000}
+  easing="sine-in-out"
+  loop={false}
+  speed={1}
+  enabled
+/>
+```
+
+- **`color?: Color`** - Base text color
+- **`from?: number`** - Starting opacity (0-1)
+- **`to?: number`** - Ending opacity (0-1)
+- **`duration?: number`** - Duration (ms)
+- **`easing?: EasingName`** - Easing name
+- **`loop?: boolean`** - Loop animation
+
+### Wave
+
+```tsx
+<Wave
+  colors={['#888888', '#ffffff']}
+  amplitude={0.5}
+  frequency={2}
+  type="brightness"
+  speed={1}
+  enabled
+/>
+```
+
+- **`colors?: [Color, Color]`** - Gradient colors `[dark, bright]`
+- **`amplitude?: number`** - Wave height (0-1)
+- **`frequency?: number`** - Number of cycles across text
+- **`type?: 'brightness' | 'vertical'`** - Wave effect type
+
+### Flash
+
+```tsx
+<Flash
+  color="#ffffff"
+  minIntensity={0.3}
+  maxIntensity={1}
+  duration={1000}
+  speed={1}
+  enabled
+/>
+```
+
+- **`color?: Color`** - Base text color
+- **`minIntensity?: number`** - Minimum brightness (0-1)
+- **`maxIntensity?: number`** - Maximum brightness (0-1)
+- **`duration?: number`** - Flash cycle duration (ms)
+
 ## Easing Functions
 
 The Fade component supports these easing functions:
 
 - **`linear`** - Constant speed
 - **`ease-in`** - Slow start, fast end
-- **`ease-out`** - Fast start, slow end (default)
+- **`ease-out`** - Fast start, slow end
 - **`ease-in-out`** - Slow start and end, fast middle
+- **`sine-in-out`** - Smooth sine curve
 
 ## Performance Tips
 
