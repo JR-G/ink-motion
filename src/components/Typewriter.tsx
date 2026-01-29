@@ -89,8 +89,9 @@ export function Typewriter({
   enabled = true,
   onComplete,
 }: TypewriterProps) {
-  const characters = splitChars(children)
-  const totalCharacters = getTextLength(children)
+  const safeChildren = children ?? ''
+  const characters = splitChars(safeChildren)
+  const totalCharacters = getTextLength(safeChildren)
 
   const visibleCharacters = useTypewriterProgress({
     totalCharacters,

@@ -27,7 +27,7 @@ describe('Typewriter', () => {
       const { lastFrame } = render(<Typewriter></Typewriter>)
       console.error = consoleError
       const frame = lastFrame() ?? ''
-      expect(frame).toContain('ERROR')
+      expect(frame).toBe('')
     })
 
     it('should handle Unicode characters', () => {
