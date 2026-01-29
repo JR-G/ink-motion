@@ -1,14 +1,20 @@
 # ink-motion
 
-Beautiful, performant text effects and animations for [Ink](https://github.com/vadimdemedes/ink) CLI applications.
+Animation components for Ink CLIs: shimmer, typewriter, fade, wave, flash.
 
-## Features
+[![CI](https://github.com/JR-G/ink-motion/actions/workflows/ci.yml/badge.svg)](https://github.com/JR-G/ink-motion/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/ink-motion)](https://www.npmjs.com/package/ink-motion)
+[![downloads](https://img.shields.io/npm/dm/ink-motion)](https://www.npmjs.com/package/ink-motion)
+[![license](https://img.shields.io/npm/l/ink-motion)](./LICENSE)
 
-- 🎨 **Rich text effects**: Shimmer, Typewriter, Fade, Wave, Flash
-- ⚡ **Performant**: Optimised animations with minimal re-renders
-- 🔧 **Highly customisable**: Control colors, speed, intensity, and more
-- 📦 **Type-safe**: Full TypeScript support with strict types
-- 🪶 **Lightweight**: Minimal dependencies
+![Ink Motion demo](docs/assets/motion-demo.gif)
+
+## Why ink-motion
+
+- Drop-in animated text for Ink without hand-rolled timers.
+- Consistent timing controls across effects (speed, enabled, onComplete).
+- TypeScript-first API with strict types.
+- Tiny dependency surface: just Ink + React + Chalk.
 
 ## Installation
 
@@ -43,15 +49,13 @@ render(<App />)
 
 ## Components
 
-- **Shimmer** - Shimmering highlight effect
-- **Typewriter** - Character-by-character typing animation
-- **Fade** - Smooth fade in/out transitions
-- **Wave** - Wave motion through text
-- **Flash** - Pulsing neon-like glow effect
+- **Shimmer** — moving highlight band across text
+- **Typewriter** — character-by-character reveal with cursor
+- **Fade** — smooth fade in/out with easing
+- **Wave** — sine wave brightness or vertical shift
+- **Flash** — pulsing neon-like glow
 
 ## Demo
-
-See all effects in action:
 
 ```bash
 git clone https://github.com/JR-G/ink-motion
@@ -62,7 +66,23 @@ bun run demo
 
 ## Documentation
 
-See [Guide](./docs/guide.md) for advanced usage patterns and TypeScript types.
+- Guide: `docs/guide.md`
+
+## Requirements
+
+- Ink `^5`
+- React `^18`
+
+## Development
+
+Bun is used for local scripts and tests.
+
+```bash
+bun install
+bun run lint
+bun run test
+bun run build
+```
 
 ## License
 
