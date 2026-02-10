@@ -53,6 +53,7 @@
     "test": "bun test",
     "test:file": "f() { bun test tests/${1:-*}.test.tsx; }; f",
     "test:all": "bun run lint && bun run type-check && bun run test && bun run build",
+    "typecheck": "tsc --noEmit",
     "type-check": "tsc --noEmit",
     "lint": "eslint .",
     "hooks:install": "lefthook install --reset-hooks-path",
