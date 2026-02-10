@@ -1,5 +1,6 @@
 import { Box, render, Text } from 'ink'
-import React, { useState } from 'react'
+import * as React from 'react'
+import { useState } from 'react'
 import { Fade, Flash, Shimmer, Typewriter, Wave } from '../src/index.js'
 
 function Demo() {
