@@ -20,7 +20,7 @@ export function useCursorBlink({
   isComplete,
 }: UseCursorBlinkOptions): boolean {
   const [showCursor, setShowCursor] = useState(true)
-  const intervalRef = useRef<Timer>()
+  const intervalRef = useRef<Timer | null>(null)
 
   useEffect(() => {
     if (!enabled || isComplete) {

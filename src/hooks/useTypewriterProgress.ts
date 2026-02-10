@@ -45,7 +45,7 @@ export function useTypewriterProgress({
   onComplete,
 }: UseTypewriterProgressOptions): number {
   const [visibleCharacters, setVisibleCharacters] = useState(0)
-  const timeoutRef = useRef<Timer>()
+  const timeoutRef = useRef<Timer | null>(null)
   const hasCompletedTyping = visibleCharacters >= totalCharacters
 
   useEffect(() => {
