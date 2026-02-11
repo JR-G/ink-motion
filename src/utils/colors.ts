@@ -7,11 +7,10 @@ const HEX_BYTE_LENGTH = 2
 const HEX_PAD_CHARACTER = '0'
 const MIN_RGB_COMPONENTS = 3
 const INTERPOLATION_MIDPOINT = 0.5
-
 const HEX_COLOR_REGEX = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i
 const RGB_NUMBERS_REGEX = /\d+/g
 
-function rgbToHex(red: number, green: number, blue: number): string {
+export function rgbToHex(red: number, green: number, blue: number): string {
   const redHex = red.toString(HEX_BASE).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
   const greenHex = green.toString(HEX_BASE).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
   const blueHex = blue.toString(HEX_BASE).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
@@ -19,10 +18,10 @@ function rgbToHex(red: number, green: number, blue: number): string {
 }
 
 /**
- * Converts a hex color string to RGB values
+ * Converts a hex color string to RGB values.
  *
- * @param hex - Hex color string (with or without #)
- * @returns Tuple of [red, green, blue] values (0-255) or null if invalid
+ * @param hex - Hex color string (with or without `#`).
+ * @returns Tuple of `[red, green, blue]` values (0-255) or `null` if invalid.
  */
 export function hexToRgb(hex: string): [number, number, number] | null {
   const result = HEX_COLOR_REGEX.exec(hex)
@@ -41,11 +40,11 @@ export function hexToRgb(hex: string): [number, number, number] | null {
 }
 
 /**
- * Applies color to text using chalk
+ * Applies color to text using chalk.
  *
- * @param text - Text to colorize
- * @param color - Color as hex (#ff0000), rgb(255,0,0), or named color (red, blue, etc)
- * @returns Colorized text with ANSI escape codes
+ * @param text - Text to colorize.
+ * @param color - Color as hex (`#ff0000`), rgb (`rgb(255,0,0)`), or named color (`red`, `blue`, etc).
+ * @returns Colorized text with ANSI escape codes.
  */
 export function colorize(text: string, color: Color): string {
   try {
@@ -83,12 +82,12 @@ export function colorize(text: string, color: Color): string {
 }
 
 /**
- * Applies opacity to a hex color by darkening it
- * Note: Terminal approximation - true opacity not possible in most terminals
+ * Applies opacity to a hex color by darkening it.
+ * Note: terminal approximation only; true alpha blending is not supported.
  *
- * @param color - Hex color string
- * @param opacity - Opacity value from 0 (transparent/black) to 1 (fully opaque)
- * @returns Adjusted hex color or original color if not hex format
+ * @param color - Hex color string.
+ * @param opacity - Opacity value from `0` (transparent/black) to `1` (fully opaque).
+ * @returns Adjusted hex color or original color if input is not hex.
  */
 export function applyOpacity(color: Color, opacity: number): Color {
   if (!color.startsWith('#'))
@@ -107,12 +106,12 @@ export function applyOpacity(color: Color, opacity: number): Color {
 }
 
 /**
- * Interpolates between two colors
+ * Interpolates between two colors.
  *
- * @param color1 - Starting color
- * @param color2 - Ending color
- * @param progress - Interpolation progress from 0 to 1
- * @returns Interpolated color (hex if both inputs are hex, otherwise snaps to nearest)
+ * @param color1 - Starting color.
+ * @param color2 - Ending color.
+ * @param progress - Interpolation progress from `0` to `1`.
+ * @returns Interpolated color (hex if both inputs are hex; otherwise nearest endpoint).
  */
 export function interpolateColor(
   color1: Color,
@@ -140,3 +139,9 @@ export function interpolateColor(
 
   return rgbToHex(red, green, blue)
 }
+
+export {
+  __resetTerminalColorDetectionCacheForTests,
+  detectTerminalBackgroundColor,
+  queryTerminalBackgroundColor,
+} from '../fade/background-detection.js'
