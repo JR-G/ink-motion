@@ -2,7 +2,8 @@
 set -euo pipefail
 
 git checkout main
-git pull
+git pull --ff-only
+git fetch --tags
 
 version=$(node -p "require('./package.json').version")
 tag="v$version"

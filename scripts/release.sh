@@ -8,6 +8,23 @@ if [[ "$bump" != "patch" && "$bump" != "minor" && "$bump" != "major" ]]; then
   exit 1
 fi
 
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+if [[ "$current_branch" != "main" ]]; then
+  echo "Error: run this script from the main branch"
+  exit 1
+fi
+
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo "Error: working tree is dirty"
+  exit 1
+fi
+
+git fetch origin main
+if [[ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]]; then
+  echo "Error: main is not up to date with origin/main"
+  exit 1
+fi
+
 current=$(node -p "require('./package.json').version")
 if [[ ! "$current" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   echo "Error: invalid version '$current' in package.json (expected major.minor.patch)"
