@@ -1,15 +1,17 @@
 import type { BaseEffectProps, Color, EasingName } from '../types/index.js'
-import process from 'node:process'
 import chalk from 'chalk'
 import { Text } from 'ink'
 import { useEffect, useMemo, useState } from 'react'
+import { detectTerminalBackgroundColor, queryTerminalBackgroundColor } from '../fade/background-detection.js'
+import { warnAutoBackgroundFallbackOnce } from '../fade/logger.js'
 import { useElapsedTime } from '../hooks/useElapsedTime.js'
-import { colorize, detectTerminalBackgroundColor, interpolateColor, queryTerminalBackgroundColor } from '../utils/colors.js'
+import { colorize, interpolateColor } from '../utils/colors.js'
 import { getEasingFunction } from '../utils/easing.js'
 
 interface FadeProps extends BaseEffectProps {
   /**
-   * Text color
+   * Text color.
+   *
    * @default '#ffffff'
    * @example 'yellow'
    */
@@ -17,37 +19,38 @@ interface FadeProps extends BaseEffectProps {
 
   /**
    * Background color used as the fade target.
-   * Set to 'auto' to detect terminal background from env hints.
+   * Set to `'auto'` to detect terminal background from runtime hints.
+   *
    * @default 'auto'
    */
   backgroundColor?: Color | 'auto'
 
   /**
-   * Starting opacity (0-1)
+   * Starting opacity (0-1).
    * @default 0
    */
   from?: number
 
   /**
-   * Ending opacity (0-1)
+   * Ending opacity (0-1).
    * @default 1
    */
   to?: number
 
   /**
-   * Duration in milliseconds
+   * Duration in milliseconds.
    * @default 1000
    */
   duration?: number
 
   /**
-   * Easing function
+   * Easing function.
    * @default 'ease-out'
    */
   easing?: EasingName
 
   /**
-   * Loop animation continuously
+   * Loop animation continuously.
    * @default false
    */
   loop?: boolean
@@ -64,8 +67,6 @@ const FALLBACK_FADE_DIM_1 = 0.66
 const FALLBACK_FADE_DIM_2 = 0.33
 const FALLBACK_FADE_HIDE = 0.12
 
-let hasWarnedAutoBackgroundFallback = false
-
 function calculateOpacity(
   elapsedTime: number,
   duration: number,
@@ -79,20 +80,11 @@ function calculateOpacity(
 }
 
 /**
- * Fade effect component that smoothly transitions text opacity
+ * Fade effect component that smoothly transitions text opacity.
  *
- * Animates text from one opacity to another using configurable easing functions.
- * Can loop continuously or run once.
- *
- * By default, fades toward the detected terminal background color (when available).
- * You can also set `backgroundColor` explicitly for deterministic output.
- *
- * @example
- * ```tsx
- * <Fade color="yellow" from={0} to={1} duration={500} easing="ease-in">
- *   Success!
- * </Fade>
- * ```
+ * By default, this component fades text toward the detected terminal background color.
+ * When detection is unavailable, it uses a graceful dim/hide fallback to avoid abrupt
+ * transitions on unknown themes.
  */
 export function Fade({
   children,
@@ -136,10 +128,8 @@ export function Fade({
       if (cancelled)
         return
 
-      const shouldWarnAutoBackgroundFallback = process.env.NODE_ENV === 'development' || process.env.INK_MOTION_DEBUG === '1'
-      if (queriedColor === null && !hasWarnedAutoBackgroundFallback && shouldWarnAutoBackgroundFallback) {
-        hasWarnedAutoBackgroundFallback = true
-        console.warn('[ink-motion/Fade] Could not auto-detect terminal background. Using fallback dim/hide fade. Set `backgroundColor` or INK_MOTION_BACKGROUND_COLOR for exact blending.')
+      if (queriedColor === null) {
+        warnAutoBackgroundFallbackOnce()
         return
       }
 
@@ -176,9 +166,8 @@ export function Fade({
 
     const opacity = calculateOpacity(effectiveTime, duration, from, to, easing)
 
-    if (opacity <= 0) {
+    if (opacity <= 0)
       return ''
-    }
 
     const baseColor = color ?? '#ffffff'
     const clampedOpacity = Math.min(Math.max(opacity, 0), 1)
