@@ -149,8 +149,10 @@ function getTerminalThemeHint(): 'dark' | 'light' | null {
     return rawTheme
 
   const vscodeTheme = process.env.VSCODE_THEME_KIND?.toLowerCase()
-  if (vscodeTheme === THEME_DARK || vscodeTheme === THEME_LIGHT)
-    return vscodeTheme
+  if (vscodeTheme?.endsWith(THEME_DARK))
+    return THEME_DARK
+  if (vscodeTheme?.endsWith(THEME_LIGHT))
+    return THEME_LIGHT
 
   return null
 }

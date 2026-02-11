@@ -40,6 +40,18 @@ describe('detectTerminalBackgroundColor', () => {
     expect(detectTerminalBackgroundColor()).toBe('#ffffff')
   })
 
+  it('supports VS Code prefixed theme hints', () => {
+    delete process.env.INK_MOTION_BACKGROUND_COLOR
+    delete process.env.COLORFGBG
+    delete process.env.TERM_THEME
+
+    process.env.VSCODE_THEME_KIND = 'vscode-dark'
+    expect(detectTerminalBackgroundColor()).toBe('#000000')
+
+    process.env.VSCODE_THEME_KIND = 'vscode-light'
+    expect(detectTerminalBackgroundColor()).toBe('#ffffff')
+  })
+
   it('returns null when no signal exists', () => {
     delete process.env.INK_MOTION_BACKGROUND_COLOR
     delete process.env.COLORFGBG
