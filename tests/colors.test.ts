@@ -40,7 +40,7 @@ describe('detectTerminalBackgroundColor', () => {
     expect(detectTerminalBackgroundColor()).toBe('#ffffff')
   })
 
-  it('defaults to dark when no signal exists', () => {
+  it('returns null when no signal exists', () => {
     delete process.env.INK_MOTION_BACKGROUND_COLOR
     delete process.env.COLORFGBG
     delete process.env.TERM_THEME

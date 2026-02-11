@@ -1,8 +1,18 @@
-import { describe, expect, it } from 'bun:test'
+import { afterEach, beforeEach, describe, expect, it } from 'bun:test'
 import { render } from 'ink-testing-library'
-import * as React from 'react'
 import { Fade } from '../src/components/Fade.js'
 import { stripAnsi } from './utils.js'
+
+const ORIGINAL_ENV = { ...process.env }
+
+beforeEach(() => {
+  process.env = { ...ORIGINAL_ENV }
+  process.env.INK_MOTION_BACKGROUND_COLOR = '#000000'
+})
+
+afterEach(() => {
+  process.env = { ...ORIGINAL_ENV }
+})
 
 describe('Fade', () => {
   describe('rendering', () => {
