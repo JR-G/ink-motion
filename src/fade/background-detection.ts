@@ -182,8 +182,16 @@ function detectGhosttyBackgroundColor(): Color | null {
       stdio: ['ignore', 'pipe', 'ignore'],
       timeout: 500,
     })
-    const line = output.split('\n').find(candidate => candidate.trim().startsWith('background'))
-    const parsed = parseHexColorOrNull(line?.split('=').at(-1))
+    const backgroundValue = output
+      .split('\n')
+      .map((candidate) => {
+        const [key, value] = candidate.split('=')
+        if (!key || !value)
+          return null
+        return key.trim() === 'background' ? value.trim() : null
+      })
+      .find((value): value is string => value !== null)
+    const parsed = parseHexColorOrNull(backgroundValue)
     cachedGhosttyBackgroundColor = parsed
     return parsed
   }
