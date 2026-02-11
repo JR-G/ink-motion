@@ -10,7 +10,7 @@ const INTERPOLATION_MIDPOINT = 0.5
 const HEX_COLOR_REGEX = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i
 const RGB_NUMBERS_REGEX = /\d+/g
 
-function rgbToHex(red: number, green: number, blue: number): string {
+export function rgbToHex(red: number, green: number, blue: number): string {
   const redHex = red.toString(HEX_BASE).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
   const greenHex = green.toString(HEX_BASE).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
   const blueHex = blue.toString(HEX_BASE).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)

@@ -178,7 +178,7 @@ export function Fade({
         return base
       if (clampedOpacity >= FALLBACK_FADE_DIM_2)
         return chalk.dim(base)
-      return chalk.dim(chalk.dim(base))
+      return chalk.gray(chalk.dim(base))
     }
 
     const fadedColor = interpolateColor(fadeTargetColor, baseColor, clampedOpacity)

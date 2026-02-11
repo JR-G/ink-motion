@@ -2,12 +2,11 @@ import type { Buffer } from 'node:buffer'
 import type { Color } from '../types/index.js'
 import { execFileSync } from 'node:child_process'
 import process from 'node:process'
-import { hexToRgb } from '../utils/colors.js'
+import { hexToRgb, rgbToHex } from '../utils/colors.js'
 
 const DECIMAL_BASE = 10
 const HEX_BASE = 16
 const HEX_BYTE_LENGTH = 2
-const HEX_PAD_CHARACTER = '0'
 const ANSI_256_MAX = 255
 const THEME_DARK = 'dark'
 const THEME_LIGHT = 'light'
@@ -46,13 +45,6 @@ const ANSI_16_TO_HEX: Record<number, string> = {
 let cachedOscBackgroundColor: Color | null | undefined
 let oscQueryPromise: Promise<Color | null> | null = null
 let cachedGhosttyBackgroundColor: Color | null | undefined
-
-function rgbToHex(red: number, green: number, blue: number): string {
-  const redHex = red.toString(HEX_BASE).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
-  const greenHex = green.toString(HEX_BASE).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
-  const blueHex = blue.toString(HEX_BASE).padStart(HEX_BYTE_LENGTH, HEX_PAD_CHARACTER)
-  return `#${redHex}${greenHex}${blueHex}`
-}
 
 function parseColorFgbgBackgroundIndex(colorFgbg: string): number | null {
   const tokens = colorFgbg.split(';')
