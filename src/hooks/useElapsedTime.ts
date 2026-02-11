@@ -11,11 +11,21 @@ import { useAnimationFrame } from './useAnimationFrame.js'
 export function useElapsedTime(
   enabled: boolean = true,
   speed: number = 1,
+  maxElapsedTime?: number,
 ): number {
   const [elapsedTime, setElapsedTime] = useState(0)
 
   useAnimationFrame((deltaTime) => {
-    setElapsedTime(prev => prev + deltaTime * speed)
+    setElapsedTime((prev) => {
+      if (maxElapsedTime !== undefined && prev >= maxElapsedTime)
+        return prev
+
+      const next = prev + (deltaTime * speed)
+      if (maxElapsedTime === undefined)
+        return next
+
+      return Math.min(next, maxElapsedTime)
+    })
   }, enabled)
 
   return elapsedTime

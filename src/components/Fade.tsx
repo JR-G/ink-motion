@@ -1,7 +1,7 @@
 import type { BaseEffectProps, Color, EasingName } from '../types/index.js'
 import chalk from 'chalk'
 import { Text } from 'ink'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { detectTerminalBackgroundColor, queryTerminalBackgroundColor } from '../fade/background-detection.js'
 import { warnAutoBackgroundFallbackOnce } from '../fade/logger.js'
 import { useElapsedTime } from '../hooks/useElapsedTime.js'
@@ -99,8 +99,8 @@ export function Fade({
   enabled = true,
   onComplete,
 }: FadeProps) {
-  const [hasCompleted, setHasCompleted] = useState(false)
-  const elapsedTime = useElapsedTime(enabled && !hasCompleted, speed)
+  const hasCalledOnCompleteRef = useRef(false)
+  const elapsedTime = useElapsedTime(enabled, speed, loop ? undefined : duration)
   const [autoDetectedBackground, setAutoDetectedBackground] = useState<Color | null>(() => {
     if (backgroundColor !== 'auto')
       return null
@@ -146,11 +146,11 @@ export function Fade({
 
     const isComplete = elapsedTime >= duration
 
-    if (isComplete && !loop && !hasCompleted) {
-      setHasCompleted(true)
+    if (isComplete && !loop && !hasCalledOnCompleteRef.current) {
+      hasCalledOnCompleteRef.current = true
       onComplete?.()
     }
-  }, [elapsedTime, duration, loop, hasCompleted, enabled, onComplete])
+  }, [elapsedTime, duration, loop, enabled, onComplete])
 
   const fadedText = useMemo(() => {
     let effectiveTime = elapsedTime
