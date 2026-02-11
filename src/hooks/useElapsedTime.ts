@@ -6,6 +6,7 @@ import { useAnimationFrame } from './useAnimationFrame.js'
  *
  * @param enabled - Whether to track time
  * @param speed - Speed multiplier (default: 1)
+ * @param maxElapsedTime - Optional cap for elapsed time in milliseconds
  * @returns Elapsed time in milliseconds
  */
 export function useElapsedTime(
