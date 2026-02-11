@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { render } from 'ink-testing-library'
-import React from 'react'
+import * as React from 'react'
 import { Flash } from '../src/components/Flash.js'
 import { stripAnsi } from './utils.js'
 

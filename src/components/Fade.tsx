@@ -1,8 +1,10 @@
 import type { BaseEffectProps, Color, EasingName } from '../types/index.js'
+import process from 'node:process'
+import chalk from 'chalk'
 import { Text } from 'ink'
 import { useEffect, useMemo, useState } from 'react'
 import { useElapsedTime } from '../hooks/useElapsedTime.js'
-import { colorize, interpolateColor } from '../utils/colors.js'
+import { colorize, detectTerminalBackgroundColor, interpolateColor, queryTerminalBackgroundColor } from '../utils/colors.js'
 import { getEasingFunction } from '../utils/easing.js'
 
 interface FadeProps extends BaseEffectProps {
@@ -12,6 +14,13 @@ interface FadeProps extends BaseEffectProps {
    * @example 'yellow'
    */
   color?: Color
+
+  /**
+   * Background color used as the fade target.
+   * Set to 'auto' to detect terminal background from env hints.
+   * @default 'auto'
+   */
+  backgroundColor?: Color | 'auto'
 
   /**
    * Starting opacity (0-1)
@@ -50,6 +59,12 @@ const DEFAULT_DURATION_MS = 1000
 const DEFAULT_EASING: EasingName = 'sine-in-out'
 const DEFAULT_LOOP = false
 const DEFAULT_SPEED = 1
+const DEFAULT_BACKGROUND_COLOR = 'auto'
+const FALLBACK_FADE_DIM_1 = 0.66
+const FALLBACK_FADE_DIM_2 = 0.33
+const FALLBACK_FADE_HIDE = 0.12
+
+let hasWarnedAutoBackgroundFallback = false
 
 function calculateOpacity(
   elapsedTime: number,
@@ -69,9 +84,8 @@ function calculateOpacity(
  * Animates text from one opacity to another using configurable easing functions.
  * Can loop continuously or run once.
  *
- * Note: Optimized for dark terminals. Fades to/from black which appears as true
- * transparency on dark backgrounds. On light terminals, low opacity text may appear
- * visible as dark text. For best results on all terminals, use bright colors.
+ * By default, fades toward the detected terminal background color (when available).
+ * You can also set `backgroundColor` explicitly for deterministic output.
  *
  * @example
  * ```tsx
@@ -83,6 +97,7 @@ function calculateOpacity(
 export function Fade({
   children,
   color,
+  backgroundColor = DEFAULT_BACKGROUND_COLOR,
   from = DEFAULT_FROM,
   to = DEFAULT_TO,
   duration = DEFAULT_DURATION_MS,
@@ -94,6 +109,47 @@ export function Fade({
 }: FadeProps) {
   const [hasCompleted, setHasCompleted] = useState(false)
   const elapsedTime = useElapsedTime(enabled && !hasCompleted, speed)
+  const [autoDetectedBackground, setAutoDetectedBackground] = useState<Color | null>(() => {
+    if (backgroundColor !== 'auto')
+      return null
+
+    return detectTerminalBackgroundColor()
+  })
+
+  const fadeTargetColor = useMemo(() => {
+    if (backgroundColor !== 'auto')
+      return backgroundColor
+
+    return autoDetectedBackground
+  }, [backgroundColor, autoDetectedBackground])
+
+  useEffect(() => {
+    if (backgroundColor !== 'auto')
+      return
+
+    // Use OSC background query when env-based detection is unavailable.
+    if (autoDetectedBackground !== null)
+      return
+
+    let cancelled = false
+    queryTerminalBackgroundColor().then((queriedColor) => {
+      if (cancelled)
+        return
+
+      const shouldWarnAutoBackgroundFallback = process.env.NODE_ENV === 'development' || process.env.INK_MOTION_DEBUG === '1'
+      if (queriedColor === null && !hasWarnedAutoBackgroundFallback && shouldWarnAutoBackgroundFallback) {
+        hasWarnedAutoBackgroundFallback = true
+        console.warn('[ink-motion/Fade] Could not auto-detect terminal background. Using fallback dim/hide fade. Set `backgroundColor` or INK_MOTION_BACKGROUND_COLOR for exact blending.')
+        return
+      }
+
+      setAutoDetectedBackground(queriedColor)
+    })
+
+    return () => {
+      cancelled = true
+    }
+  }, [backgroundColor, autoDetectedBackground])
 
   useEffect(() => {
     if (!enabled)
@@ -120,16 +176,28 @@ export function Fade({
 
     const opacity = calculateOpacity(effectiveTime, duration, from, to, easing)
 
-    if (opacity < 0.01) {
+    if (opacity <= 0) {
       return ''
     }
 
     const baseColor = color ?? '#ffffff'
-    const elegantOpacity = opacity ** 1.5
-    const fadedColor = interpolateColor('#000000', baseColor, elegantOpacity)
+    const clampedOpacity = Math.min(Math.max(opacity, 0), 1)
+    if (fadeTargetColor === null) {
+      if (clampedOpacity <= FALLBACK_FADE_HIDE)
+        return ''
+
+      const base = colorize(children, baseColor)
+      if (clampedOpacity >= FALLBACK_FADE_DIM_1)
+        return base
+      if (clampedOpacity >= FALLBACK_FADE_DIM_2)
+        return chalk.dim(base)
+      return chalk.dim(chalk.dim(base))
+    }
+
+    const fadedColor = interpolateColor(fadeTargetColor, baseColor, clampedOpacity)
 
     return colorize(children, fadedColor)
-  }, [children, elapsedTime, duration, from, to, easing, color, loop])
+  }, [children, elapsedTime, duration, from, to, easing, color, loop, fadeTargetColor])
 
   return <Text>{fadedText}</Text>
 }

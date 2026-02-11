@@ -13,8 +13,8 @@ export function useAnimationFrame(
   callback: (deltaTime: number) => void,
   enabled: boolean = true,
 ): void {
-  const intervalRef = useRef<Timer>()
-  const previousTimeRef = useRef<number>()
+  const intervalRef = useRef<Timer | null>(null)
+  const previousTimeRef = useRef<number | null>(null)
   const callbackRef = useRef(callback)
 
   useEffect(() => {
@@ -26,13 +26,13 @@ export function useAnimationFrame(
       if (intervalRef.current) {
         clearInterval(intervalRef.current)
       }
-      previousTimeRef.current = undefined
+      previousTimeRef.current = null
       return
     }
 
     intervalRef.current = setInterval(() => {
       const currentTime = Date.now()
-      if (previousTimeRef.current !== undefined) {
+      if (previousTimeRef.current !== null) {
         const deltaTime = currentTime - previousTimeRef.current
         callbackRef.current(deltaTime)
       }
