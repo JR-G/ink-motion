@@ -96,7 +96,7 @@ function normalizeOscChannel(channelHex: string): number {
   if (Number.isNaN(parsed))
     return 0
 
-  if (channelHex.length <= HEX_BYTE_LENGTH)
+  if (channelHex.length === HEX_BYTE_LENGTH)
     return parsed
 
   const fullScale = (16 ** channelHex.length) - 1
