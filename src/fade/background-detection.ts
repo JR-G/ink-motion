@@ -139,7 +139,6 @@ function buildOsc11QuerySequence(): string {
   if (!process.env.TMUX)
     return osc11Query
 
-  // tmux passthrough wrapper so the terminal receives OSC query.
   return `\u001BPtmux;\u001B${osc11Query}\u001B\\`
 }
 

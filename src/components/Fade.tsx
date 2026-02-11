@@ -119,7 +119,6 @@ export function Fade({
     if (backgroundColor !== 'auto')
       return
 
-    // Use OSC background query when env-based detection is unavailable.
     if (autoDetectedBackground !== null)
       return
 
@@ -148,7 +147,6 @@ export function Fade({
     const isComplete = elapsedTime >= duration
 
     if (isComplete && !loop && !hasCompleted) {
-      // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect -- Intentional: prevents calling onComplete multiple times by setting completion flag once
       setHasCompleted(true)
       onComplete?.()
     }
